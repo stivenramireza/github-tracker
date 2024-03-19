@@ -26,7 +26,7 @@ Now you have an environment to run this application and the automated tests.
 You can run this application with the following command:
 
 ```bash
-$ python src/main.py
+$ python main.py
 ```
 
 ### Testing
