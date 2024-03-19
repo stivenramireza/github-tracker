@@ -9,7 +9,7 @@ First of all, you need to install [Python 3.12](https://www.python.org).
 Later, you can create a **virtual environment** and active it in order to install the dependencies only for this project:
 
 ```bash
-$ python3.10 -m venv venv
+$ python3.12 -m venv venv
 $ source venv/bin/activate
 ```
 
