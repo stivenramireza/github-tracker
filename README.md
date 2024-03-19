@@ -1,2 +1,3 @@
-# github-tracker
+# GitHub Tracker
+
 GitHub tracker as a secure software application.
