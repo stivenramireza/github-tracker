@@ -1,0 +1,17 @@
+# Code editor
+.vscode
+
+# Virtual environment
+venv
+
+# Environment variables
+.env
+
+# Python cache
+__pycache__
+
+# Pytest cache
+.pytest_cache
+
+# Coverage
+.coverage

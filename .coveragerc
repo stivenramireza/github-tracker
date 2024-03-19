@@ -1,0 +1,11 @@
+[run]
+omit =
+    src/utils/*
+    src/main.py
+    tests/*
+    venv/*
+
+[report]
+show_missing = true
+fail_under = 90
+precision = 1

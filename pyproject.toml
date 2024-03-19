@@ -1,0 +1,10 @@
+[tool.black]
+line-length = 100
+skip-string-normalization = true
+
+[tool.flake8]
+max-line-length = 100
+ignore = ['F841', 'F401', 'E501']
+
+[tool.yapf]
+line-length = 100
