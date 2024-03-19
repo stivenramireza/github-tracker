@@ -1,6 +1,6 @@
 # GitHub Tracker
 
-GitHub tracker as a secure software application.
+GitHub tracker is a secure software application which meets some important topics about the cibersecurity like AAA (Authentication, Authorization, Accountability), DevSecOps, Infraestructure as Code (IaC), Single Point of Failure, SQL injection, Cross Site Scripting (XSS), logs, observability, alarms and CORS.
 
 ## Setup
 
