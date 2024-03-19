@@ -16,17 +16,16 @@ class Database:
 
     def connect(self) -> None:
         try:
-            self.logger.info(None, 'Secrets', self.secrets)
             self._connection = psycopg2.connect(
-                host=self.secrets.get('DB_HOST'),
-                port=self.secrets.get('DB_PORT'),
-                dbname=self.secrets.get('DB_NAME'),
-                user=self.secrets.get('DB_USER'),
-                password=self.secrets.get('DB_PASSWORD'),
+                host=self.secrets.get('host'),
+                port=int(self.secrets.get('port')),
+                database=self.secrets.get('name'),
+                user=self.secrets.get('user'),
+                password=self.secrets.get('password'),
             )
-            self.logger.info(None, 'Connected to PostgreSQL database successfully')
+            self.logger.info('Connected to PostgreSQL database successfully')
         except Exception as e:
-            self.logger.error(None, 'Error to connect to PostgreSQL database', e)
+            self.logger.error('Error to connect to PostgreSQL database', e)
 
     def get_connection(self) -> object:
         if self._connection:
@@ -35,4 +34,4 @@ class Database:
     def close_connection(self) -> None:
         if self._connection:
             self._connection.close()
-            self.logger.info(None, 'PostgreSQL connection has been closed')
+            self.logger.info('PostgreSQL connection has been closed')
