@@ -1,4 +1,4 @@
-name: Tests
+name: github-tracker
 
 on:
   push:
@@ -7,6 +7,24 @@ on:
     branches: ["main"]
 
 jobs:
+  linter:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install --upgrade -r requirements_local.txt
+
+      - name: Check linter
+        run: black --check .
+
   tests:
     runs-on: ubuntu-22.04
 
