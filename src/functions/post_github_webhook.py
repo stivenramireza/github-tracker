@@ -1,5 +1,5 @@
 import json
-from datetime import datetime
+import datetime
 
 from src.middlewares import database
 from src.models.models import GitHubWebhook
@@ -18,8 +18,8 @@ def insert_github_webhook(
         author_username=webhook['head_commit']['author']['username'],
         author_email=webhook['head_commit']['author']['email'],
         payload=body,
-        created_at=datetime.now(),
-        updated_at=datetime.now(),
+        created_at=datetime.datetime.now(),
+        updated_at=datetime.datetime.now(),
     )
 
     return repository.insert(ctx, commit)
@@ -32,7 +32,13 @@ def handler(event: dict, ctx: dict) -> dict:
     webhook: GitHubWebhook = json.loads(body)
 
     commit_repository = CommitRepository()
-    insert_github_webhook(ctx, commit_repository, webhook, body)
+    inserted_commit = insert_github_webhook(ctx, commit_repository, webhook, body)
+    if not inserted_commit:
+        return {
+            'statusCode': 409,
+            'headers': {'Content-Type': 'application/json'},
+            'body': json.dumps({'message': 'Error to insert the commit'}),
+        }
 
     return {
         'statusCode': 200,

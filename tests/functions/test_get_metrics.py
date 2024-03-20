@@ -2,23 +2,11 @@ import json
 import pytest
 from unittest.mock import Mock
 
-from src.config.database import Database
 from src.models.models import Commit
 from src.repositories.commit_repository import CommitRepository
 from src.functions.get_metrics import handler
 
-
-@pytest.fixture
-def mocked_db_connection() -> tuple:
-    return (None, None)
-
-
-@pytest.fixture
-def mocked_database(monkeypatch, mocked_db_connection):
-    mocked_db = Mock(return_value=mocked_db_connection)
-    monkeypatch.setattr(Database, 'get_connection', mocked_db)
-
-    return mocked_db
+from tests.config.test_database import mocked_ctx, mocked_database
 
 
 @pytest.fixture
@@ -55,7 +43,7 @@ def mocked_get_commits_from_repository_with_data(monkeypatch, mocked_commits_fro
 
 def test_handler_success_with_data(
     mocked_database,
-    mocked_db_connection,
+    mocked_ctx,
     mocked_commits_from_repository,
     mocked_get_commits_from_repository_with_data,
 ) -> None:
@@ -85,14 +73,12 @@ def test_handler_success_with_data(
         ),
     }
 
-    mocked_get_commits_from_repository_with_data.assert_called_once_with(
-        mocked_db_connection, email
-    )
+    mocked_get_commits_from_repository_with_data.assert_called_once_with(mocked_ctx, email)
 
 
 def test_handler_success_without_data(
     mocked_database,
-    mocked_db_connection,
+    mocked_ctx,
     mocked_get_commits_from_repository_without_data,
 ) -> None:
     # Arrange
@@ -116,12 +102,10 @@ def test_handler_success_without_data(
         ),
     }
 
-    mocked_get_commits_from_repository_without_data.assert_called_once_with(
-        mocked_db_connection, email
-    )
+    mocked_get_commits_from_repository_without_data.assert_called_once_with(mocked_ctx, email)
 
 
-def test_handler_failed(
+def test_handler_error(
     mocked_database,
     mocked_get_commits_from_repository_without_data,
 ) -> None:

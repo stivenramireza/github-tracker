@@ -6,25 +6,26 @@ from src.entities.commit_entity import Commit
 class CommitRepository:
 
     def insert(self, ctx: dict, commit: Commit) -> bool:
-        conn, cursor = ctx
+        try:
+            conn, cursor = ctx
+            query = """
+                INSERT INTO commits (repo_name, commit_id, commit_message, author_username, author_email, payload, created_at, updated_at)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            """
 
-        query = """
-            INSERT INTO commits (repo_name, commit_id, commit_message, author_username, author_email, payload, created_at, updated_at)
-		    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-        """
-
-        commit_dict = commit.__dict__
-        del commit_dict['id']
-        data = tuple(
-            [
-                value.isoformat() if isinstance(value, datetime) else value
-                for value in commit_dict.values()
-            ]
-        )
-        cursor.execute(query, data)
-        conn.commit()
-
-        return True
+            commit_dict = commit.__dict__
+            del commit_dict['id']
+            data = tuple(
+                [
+                    value.isoformat() if isinstance(value, datetime) else value
+                    for value in commit_dict.values()
+                ]
+            )
+            cursor.execute(query, data)
+            conn.commit()
+            return True
+        except Exception:
+            return False
 
     def get_commits_by_author_email(self, ctx: tuple, email: str) -> list[Commit]:
         _, cursor = ctx
