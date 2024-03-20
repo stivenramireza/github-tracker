@@ -27,9 +27,9 @@ class Database:
         except Exception as e:
             self.logger.error('Error to connect to PostgreSQL database', e)
 
-    def get_connection(self) -> object:
+    def get_connection(self) -> tuple:
         if self._connection:
-            return self._connection.cursor
+            return self._connection, self._connection.cursor()
 
     def close_connection(self) -> None:
         if self._connection:
