@@ -8,4 +8,5 @@ secrets = {
         'user': os.getenv('DB_USER'),
         'password': os.getenv('DB_PASSWORD'),
     },
+    'GITHUB': {'secret': os.getenv('GITHUB_SECRET')},
 }
