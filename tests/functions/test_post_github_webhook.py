@@ -27,7 +27,7 @@ def mocked_datetime_now(monkeypatch):
 
 @pytest.fixture
 def mocked_validate_github_request():
-    with patch('src.functions.post_github_webhook.main.validate_github_request') as mocked_func:
+    with patch('src.functions.post_github_webhook.validate_github_request') as mocked_func:
         yield mocked_func
 
 

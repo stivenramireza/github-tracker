@@ -1,5 +1,3 @@
-import json
-
 from src.middlewares import database
 from src.entities.commit_entity import Commit
 from src.repositories.commit_repository import CommitRepository
