@@ -6,6 +6,7 @@ from unittest.mock import Mock
 from src.entities.commit_entity import Commit
 from src.repositories.commit_repository import CommitRepository
 from src.functions.post_github_webhook import handler
+from src.utils.responses import ConflictResponse, CreatedResponse
 
 from tests.config.test_database import mocked_database, mocked_ctx
 
@@ -76,11 +77,7 @@ def test_handler_success(
     result = handler(event, ctx)
 
     # Assert
-    assert result == {
-        'statusCode': 200,
-        'headers': {'Content-Type': 'application/json'},
-        'body': json.dumps({'message': 'The commit has been inserted successfully'}),
-    }
+    assert result == CreatedResponse('The commit has been inserted successfully').to_dict()
 
     mocked_insert_repository_success.assert_called_once_with(mocked_ctx, mocked_commit)
 
@@ -121,10 +118,6 @@ def test_handler_error(
     result = handler(event, ctx)
 
     # Assert
-    assert result == {
-        'statusCode': 409,
-        'headers': {'Content-Type': 'application/json'},
-        'body': json.dumps({'message': 'Error to insert the commit'}),
-    }
+    assert result == ConflictResponse('Error to insert the commit').to_dict()
 
     mocked_insert_repository_error.assert_called_once_with(mocked_ctx, mocked_commit)

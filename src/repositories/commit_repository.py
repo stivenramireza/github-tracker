@@ -15,12 +15,14 @@ class CommitRepository:
 
             commit_dict = commit.__dict__
             del commit_dict['id']
+
             data = tuple(
                 [
                     value.isoformat() if isinstance(value, datetime) else value
                     for value in commit_dict.values()
                 ]
             )
+
             cursor.execute(query, data)
             conn.commit()
             return True

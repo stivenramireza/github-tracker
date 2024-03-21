@@ -5,6 +5,7 @@ from unittest.mock import Mock
 from src.models.models import Commit
 from src.repositories.commit_repository import CommitRepository
 from src.functions.get_metrics import handler
+from src.utils.responses import BadRequestResponse, OkResponse
 
 from tests.config.test_database import mocked_ctx, mocked_database
 
@@ -61,17 +62,16 @@ def test_handler_success_with_data(
         for commit in mocked_commits_from_repository
     ]
 
-    assert result == {
-        'statusCode': 200,
-        'headers': {'Content-Type': 'application/json'},
-        'body': json.dumps(
+    assert (
+        result
+        == OkResponse(
             {
                 'author': email,
                 'count': len(mocked_commits),
                 'commits': mocked_commits,
             }
-        ),
-    }
+        ).to_dict()
+    )
 
     mocked_get_commits_from_repository_with_data.assert_called_once_with(mocked_ctx, email)
 
@@ -90,17 +90,16 @@ def test_handler_success_without_data(
     result = handler(event, ctx)
 
     # Assert
-    assert result == {
-        'statusCode': 200,
-        'headers': {'Content-Type': 'application/json'},
-        'body': json.dumps(
+    assert (
+        result
+        == OkResponse(
             {
                 'author': email,
                 'count': 0,
                 'commits': [],
             }
-        ),
-    }
+        ).to_dict()
+    )
 
     mocked_get_commits_from_repository_without_data.assert_called_once_with(mocked_ctx, email)
 
@@ -118,10 +117,6 @@ def test_handler_error(
     result = handler(event, ctx)
 
     # Assert
-    assert result == {
-        'statusCode': 400,
-        'headers': {'Content-Type': 'application/json'},
-        'body': json.dumps({'message': 'Missing email parameter'}),
-    }
+    assert result == BadRequestResponse('Missing email parameter').to_dict()
 
     mocked_get_commits_from_repository_without_data.assert_not_called()
