@@ -65,7 +65,11 @@ jobs:
           python-version: "3.12"
 
       - name: Build lambda layers
+        uses: actions/upload-artifact@v2
         run: sh ./scripts/build_lambda_layers.sh
+        with:
+          name: dependencies
+          path: ./dist/github-tracker-dependencies.zip
 
       - name: Build lambda functions
         run: sh ./scripts/build_lambda_functions.sh

@@ -1,6 +1,9 @@
-python3.12 -m venv venv
+python -m venv venv
 source venv/bin/activate
 pip install --upgrade -r requirements.txt
+
+apt update -y && apt install zip -y
+mkdir dist
 
 BUCKET_NAME=github-tracker-lambda-stivenramireza
 
