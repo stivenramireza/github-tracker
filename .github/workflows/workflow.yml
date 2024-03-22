@@ -50,9 +50,6 @@ jobs:
   build:
     runs-on: ubuntu-22.04
     needs: tests
-    defaults:
-      run:
-        working-directory: scripts
     env:
       AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
       AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
@@ -68,10 +65,10 @@ jobs:
           python-version: "3.12"
 
       - name: Build lambda layers
-        run: sh build_lambda_layers.sh
+        run: sh ./scripts/build_lambda_layers.sh
 
       - name: Build lambda functions
-        run: sh build_lambda_functions.sh
+        run: sh ./scripts/build_lambda_functions.sh
 
   deploy:
     runs-on: ubuntu-22.04
