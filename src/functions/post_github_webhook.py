@@ -9,6 +9,7 @@ from src.entities.commit_entity import Commit
 from src.repositories.commit_repository import CommitRepository
 from src.utils.logger import Logger
 from src.utils.secrets import secrets
+from src.utils.secrets_manager import get_secret
 from src.utils.responses import CreatedResponse, ConflictResponse, UnauthorizedResponse
 
 
@@ -29,7 +30,7 @@ def validate_github_request(event: dict, ctx: dict, logger: Logger) -> bool:
 
         signature = full_signature.removeprefix(GITHUB_SIGNATURE_PREFIX)
 
-        secret = secrets.get('GITHUB').get('secret')
+        secret = get_secret(secrets.get('GITHUB').get('secret')).get('secret')
 
         calculated_signature = calculate_signature(secret, event.get('Body'))
 

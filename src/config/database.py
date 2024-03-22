@@ -1,6 +1,7 @@
 import psycopg2
 
 from src.utils.secrets import secrets
+from src.utils.secrets_manager import get_secret
 from src.utils.logger import Logger
 
 
@@ -16,13 +17,16 @@ class Database:
 
     def connect(self) -> None:
         try:
+            password = get_secret(self.secrets.get('password')).get('password')
+
             self._connection = psycopg2.connect(
                 host=self.secrets.get('host'),
                 port=int(self.secrets.get('port')),
                 database=self.secrets.get('name'),
                 user=self.secrets.get('user'),
-                password=self.secrets.get('password'),
+                password=password,
             )
+
             self.logger.info('Connected to PostgreSQL database successfully')
         except Exception as e:
             self.logger.error('Error to connect to PostgreSQL database', e)
