@@ -27,6 +27,7 @@ jobs:
 
   tests:
     runs-on: ubuntu-22.04
+    needs: linter
 
     steps:
       - name: Checkout code
@@ -45,3 +46,55 @@ jobs:
 
       - name: Generate coverage report
         run: coverage report -m
+
+  build:
+    runs-on: ubuntu-22.04
+    needs: tests
+    working-directory: infraestructure
+    env:
+      AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
+      AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+      AWS_REGION: ${{secrets.AWS_REGION}}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.12"
+
+      - name: Build lambda layers
+        run: sh ./scripts/build_lambda_layers.sh
+
+      - name: Build lambda functions
+        run: sh ./scripts/build_lambda_functions.sh
+
+  deploy:
+    runs-on: ubuntu-22.04
+    needs: build
+    working-directory: scripts
+    env:
+      AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
+      AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+      AWS_REGION: ${{secrets.AWS_REGION}}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Initialize the config
+        run: terraform init
+
+      - name: Check if the config is formatted
+        run: terraform fmt -check
+
+      - name: Generate the execution plan
+        run: terraform plan
+
+      - name: Apply the execution plan in order to deploy the infraestructure
+        run: terraform apply

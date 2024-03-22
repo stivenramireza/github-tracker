@@ -1,6 +1,6 @@
 python3.12 -m venv venv
 source venv/bin/activate
-pip install --upgrade -r ./dependencies/requirements.txt
+pip install --upgrade -r requirements.txt
 
 BUCKET_NAME=github-tracker-lambda-stivenramireza
 
