@@ -6,24 +6,22 @@ GitHub tracker is a secure software application which meets some important topic
 
 First of all, you need to install [Python 3.12](https://www.python.org).
 
-Later, you can create a **virtual environment** and active it in order to install the dependencies only for this project:
+After that, you can create a **virtual environment** and active it in order to install the dependencies only for your propose:
 
 ```bash
 $ python3.12 -m venv venv
 $ source venv/bin/activate
 ```
 
-After that, you must install the dependencies:
-
-```bash
-pip install --upgrade -r requirements.txt
-```
-
-Now you have an environment to run this application and the automated tests.
-
 ### Execution
 
-You can run this application with the following command:
+First, you need to install the main dependencies:
+
+```bash
+$ pip install --upgrade -r ./dependencies/requirements.txt
+```
+
+Later, you can run this application with the following command:
 
 ```bash
 $ python main.py
@@ -31,7 +29,15 @@ $ python main.py
 
 ### Testing
 
-Some unit tests were implemented in order to validate the GitHub tracker services. You can run them and see the coverage report with the following commands:
+Some unit tests were implemented in order to validate the GitHub tracker services.
+
+First, you need to install the test dependencies:
+
+```bash
+$ pip install --upgrade -r ./dependencies/requirements_test.txt
+```
+
+Later, you can run them and see the coverage report with the following commands:
 
 ```bash
 $ coverage run -m pytest --verbose

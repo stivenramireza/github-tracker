@@ -12,6 +12,7 @@ resource "aws_lambda_function" "authorizer" {
   s3_key           = "authorizer.zip"
   role             = var.repo_collector_role_arn
   source_code_hash = data.aws_s3_object.get_metrics.version_id
+  layers           = [aws_lambda_layer_version.github_tracker_dependencies.arn]
 
   vpc_config {
     security_group_ids = var.security_groups_ids
