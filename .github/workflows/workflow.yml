@@ -95,7 +95,7 @@ jobs:
         run: terraform fmt -check
 
       - name: Generate the execution plan
-        run: terraform plan
+        run: terraform plan -input=false
 
       - name: Apply the execution plan in order to deploy the infraestructure
-        run: terraform apply
+        run: terraform apply -auto-approve -input=false
