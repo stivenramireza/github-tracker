@@ -13,7 +13,7 @@ def get_secret(secret_name: str) -> dict:
         get_secret_value_response = client.get_secret_value(SecretId=secret_name)
     except ClientError as e:
         raise e
-    
+
     secret = get_secret_value_response['SecretString']
 
     return json.loads(secret)
